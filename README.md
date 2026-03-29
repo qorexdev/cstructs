@@ -3,12 +3,15 @@
 Portable, **header-only** data structures for C99+.
 Drop one header into your project — no build system required.
 
+Vec · Map · List · Queue · Set
+
 | Header | Structure | Notes |
 |---|---|---|
 | `vec.h` | Dynamic array | Amortised O(1) push/pop |
 | `map.h` | Hash map (string → void*) | Open addressing, auto-resize |
 | `list.h` | Doubly-linked list | O(1) front/back ops |
 | `queue.h` | FIFO queue | Circular buffer, auto-resize |
+| `set.h` | Hash set (strings) | Open addressing, auto-resize |
 
 ---
 
@@ -104,6 +107,16 @@ void  queue_free (Queue *q);
 int   queue_push (Queue *q, const void *elem);
 int   queue_pop  (Queue *q, void *out);
 void *queue_front(const Queue *q);   // peek without removing
+```
+
+### Set — Hash set (string elements)
+
+```c
+int  set_init(Set *s);
+void set_free(Set *s);
+int  set_add (Set *s, const char *elem);
+int  set_has (const Set *s, const char *elem);
+int  set_del (Set *s, const char *elem);
 ```
 
 ---

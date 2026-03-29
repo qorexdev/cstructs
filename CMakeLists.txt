@@ -27,5 +27,6 @@ install(FILES
     include/map.h
     include/list.h
     include/queue.h
+    include/set.h
     DESTINATION include/cstructs
 )

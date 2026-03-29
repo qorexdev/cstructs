@@ -1,7 +1,7 @@
 /**
  * cstructs.h — All-in-one include for the cstructs library
  *
- * Include this single header to get: Vec, Map, List, Queue
+ * Include this single header to get: Vec, Map, List, Queue, Set
  *
  * Example:
  *   #include "cstructs.h"
@@ -14,5 +14,6 @@
 #include "map.h"
 #include "list.h"
 #include "queue.h"
+#include "set.h"
 
 #endif /* CSTRUCTS_H */

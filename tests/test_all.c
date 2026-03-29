@@ -94,12 +94,47 @@ static void test_queue(void) {
     puts("[PASS] Queue");
 }
 
+/* ── Set tests ────────────────────────────────────────────────── */
+static void test_set(void) {
+    Set s;
+    assert(set_init(&s) == 0);
+
+    assert(set_add(&s, "apple")  == 0);
+    assert(set_add(&s, "banana") == 0);
+    assert(set_add(&s, "cherry") == 0);
+    assert(s.len == 3);
+
+    assert(set_add(&s, "apple") == 0);
+    assert(s.len == 3);
+
+    assert(set_has(&s, "banana") == 1);
+    assert(set_has(&s, "grape")  == 0);
+
+    assert(set_del(&s, "banana") == 0);
+    assert(set_has(&s, "banana") == 0);
+    assert(s.len == 2);
+
+    assert(set_del(&s, "missing") == -1);
+
+    for (int i = 0; i < 50; i++) {
+        char buf[32];
+        sprintf(buf, "item_%d", i);
+        assert(set_add(&s, buf) == 0);
+    }
+    assert(s.len == 52);
+
+    set_free(&s);
+    assert(s.buckets == NULL);
+    puts("[PASS] Set");
+}
+
 int main(void) {
     puts("Running cstructs tests...");
     test_vec();
     test_map();
     test_list();
     test_queue();
+    test_set();
     puts("\nAll tests passed.");
     return 0;
 }
