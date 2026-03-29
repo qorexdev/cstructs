@@ -10,11 +10,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef _MSC_VER
-#  define _cs_set_strdup _strdup
-#else
-#  define _cs_set_strdup strdup
-#endif
+static inline char *_cs_set_strdup(const char *s) {
+    size_t n = strlen(s) + 1;
+    char *d = (char *)malloc(n);
+    if (d) memcpy(d, s, n);
+    return d;
+}
 
 #define SET_INIT_CAP    16
 #define SET_LOAD_FACTOR 0.70

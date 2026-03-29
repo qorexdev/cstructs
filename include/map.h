@@ -10,12 +10,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* MSVC deprecates POSIX strdup in favour of _strdup */
-#ifdef _MSC_VER
-#  define _cs_strdup _strdup
-#else
-#  define _cs_strdup strdup
-#endif
+static inline char *_cs_strdup(const char *s) {
+    size_t n = strlen(s) + 1;
+    char *d = (char *)malloc(n);
+    if (d) memcpy(d, s, n);
+    return d;
+}
 
 #define MAP_INIT_CAP    16
 #define MAP_LOAD_FACTOR 0.70
