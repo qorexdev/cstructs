@@ -51,6 +51,102 @@ cc -std=c99 -Wall -Iinclude main.c -o main
 
 ---
 
+## Usage examples
+
+### Vec
+
+```c
+#include "vec.h"
+#include <stdio.h>
+
+int main(void) {
+    Vec v;
+    vec_init(&v, sizeof(int));
+    int vals[] = {10, 20, 30};
+    for (int i = 0; i < 3; i++) vec_push(&v, &vals[i]);
+    for (size_t i = 0; i < v.len; i++)
+        printf("%d ", *(int *)vec_at(&v, i));
+    vec_free(&v);
+}
+```
+
+### Map
+
+```c
+#include "map.h"
+#include <stdio.h>
+
+int main(void) {
+    Map m;
+    map_init(&m);
+    int age = 25;
+    map_set(&m, "alice", &age);
+    if (map_has(&m, "alice"))
+        printf("alice: %d\n", *(int *)map_get(&m, "alice"));
+    map_del(&m, "alice");
+    map_free(&m);
+}
+```
+
+### List
+
+```c
+#include "list.h"
+#include <stdio.h>
+
+int main(void) {
+    List l;
+    list_init(&l, sizeof(double));
+    double a = 1.5, b = 2.5, c = 3.5;
+    list_push_back(&l, &a);
+    list_push_back(&l, &b);
+    list_push_front(&l, &c);
+    double out;
+    while (list_pop_front(&l, &out) == 0)
+        printf("%.1f ", out);
+    list_free(&l);
+}
+```
+
+### Queue
+
+```c
+#include "queue.h"
+#include <stdio.h>
+
+int main(void) {
+    Queue q;
+    queue_init(&q, sizeof(int));
+    for (int i = 1; i <= 5; i++) queue_push(&q, &i);
+    printf("front: %d\n", *(int *)queue_front(&q));
+    int out;
+    while (queue_pop(&q, &out) == 0)
+        printf("%d ", out);
+    queue_free(&q);
+}
+```
+
+### Set
+
+```c
+#include "set.h"
+#include <stdio.h>
+
+int main(void) {
+    Set s;
+    set_init(&s);
+    set_add(&s, "apple");
+    set_add(&s, "banana");
+    set_add(&s, "apple");
+    printf("has apple: %d\n", set_has(&s, "apple"));
+    set_del(&s, "banana");
+    printf("has banana: %d\n", set_has(&s, "banana"));
+    set_free(&s);
+}
+```
+
+---
+
 ## Building examples & tests
 
 ```bash
