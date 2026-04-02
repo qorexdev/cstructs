@@ -217,6 +217,31 @@ int  set_del (Set *s, const char *elem);
 
 ---
 
+## Benchmarks
+
+Build and run `bench` to measure throughput on your machine:
+
+```bash
+cmake -B build
+cmake --build build
+./build/bench
+```
+
+Sample output (1M operations, MSVC Release, Windows 11):
+
+| Structure | Insert | Lookup/Access | Delete |
+|---|---|---|---|
+| Vec | 5 ms | 2 ms | 2 ms |
+| Map | 1535 ms | 174 ms | 101 ms |
+| List | 82 ms | — | 83 ms |
+| Queue | 8 ms | — | 4 ms |
+| Set | 1154 ms | 130 ms | 98 ms |
+
+Vec and Queue are backed by contiguous memory so they're the fastest.
+Map/Set use open addressing with string keys — the cost comes from hashing and key comparison.
+
+---
+
 ## Requirements
 
 - C99 or later

@@ -20,6 +20,12 @@ enable_testing()
 add_executable(test_all tests/test_all.c)
 add_test(NAME AllTests COMMAND test_all)
 
+# Benchmark
+add_executable(bench benchmarks/bench.c)
+if(NOT MSVC)
+    target_compile_options(bench PRIVATE -O2)
+endif()
+
 # Install headers
 install(FILES
     include/cstructs.h
