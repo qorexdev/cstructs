@@ -3,7 +3,6 @@
 #include <string.h>
 #include "../include/cstructs.h"
 
-/* ── Vec tests ─────────────────────────────────────────────────── */
 static void test_vec(void) {
     Vec v;
     assert(vec_init(&v, sizeof(int)) == 0);
@@ -26,7 +25,6 @@ static void test_vec(void) {
     puts("[PASS] Vec");
 }
 
-/* ── Map tests ─────────────────────────────────────────────────── */
 static void test_map(void) {
     Map m;
     assert(map_init(&m) == 0);
@@ -44,7 +42,6 @@ static void test_map(void) {
     assert(map_has(&m, "two") == 0);
     assert(m.len == 4);
 
-    /* update */
     int updated = 99;
     map_set(&m, "one", &updated);
     assert(*(int *)map_get(&m, "one") == 99);
@@ -53,7 +50,6 @@ static void test_map(void) {
     puts("[PASS] Map");
 }
 
-/* ── List tests ────────────────────────────────────────────────── */
 static void test_list(void) {
     List l;
     list_init(&l, sizeof(int));
@@ -73,7 +69,6 @@ static void test_list(void) {
     puts("[PASS] List");
 }
 
-/* ── Queue tests ───────────────────────────────────────────────── */
 static void test_queue(void) {
     Queue q;
     assert(queue_init(&q, sizeof(int)) == 0);
@@ -94,7 +89,6 @@ static void test_queue(void) {
     puts("[PASS] Queue");
 }
 
-/* ── Set tests ────────────────────────────────────────────────── */
 static void test_set(void) {
     Set s;
     assert(set_init(&s) == 0);
@@ -128,6 +122,46 @@ static void test_set(void) {
     puts("[PASS] Set");
 }
 
+static void test_trie(void) {
+    Trie t;
+    assert(trie_init(&t) == 0);
+
+    assert(trie_insert(&t, "apple") == 0);
+    assert(trie_insert(&t, "app") == 0);
+    assert(trie_insert(&t, "banana") == 0);
+    assert(t.len == 3);
+
+    assert(trie_search(&t, "apple") == 1);
+    assert(trie_search(&t, "app") == 1);
+    assert(trie_search(&t, "ap") == 0);
+    assert(trie_search(&t, "banana") == 1);
+    assert(trie_search(&t, "ban") == 0);
+
+    assert(trie_starts_with(&t, "app") == 1);
+    assert(trie_starts_with(&t, "ban") == 1);
+    assert(trie_starts_with(&t, "cat") == 0);
+    assert(trie_starts_with(&t, "") == 1);
+
+    // duplicate insert shouldn't change len
+    assert(trie_insert(&t, "apple") == 0);
+    assert(t.len == 3);
+
+    assert(trie_delete(&t, "apple") == 0);
+    assert(trie_search(&t, "apple") == 0);
+    assert(trie_search(&t, "app") == 1);
+    assert(t.len == 2);
+
+    assert(trie_delete(&t, "missing") == -1);
+
+    assert(trie_delete(&t, "app") == 0);
+    assert(trie_starts_with(&t, "app") == 0);
+    assert(t.len == 1);
+
+    trie_free(&t);
+    assert(t.root == NULL);
+    puts("[PASS] Trie");
+}
+
 int main(void) {
     puts("Running cstructs tests...");
     test_vec();
@@ -135,6 +169,7 @@ int main(void) {
     test_list();
     test_queue();
     test_set();
+    test_trie();
     puts("\nAll tests passed.");
     return 0;
 }

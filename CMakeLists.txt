@@ -34,5 +34,6 @@ install(FILES
     include/list.h
     include/queue.h
     include/set.h
+    include/trie.h
     DESTINATION include/cstructs
 )

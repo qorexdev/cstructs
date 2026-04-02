@@ -3,7 +3,7 @@
 Portable, **header-only** data structures for C99+.
 Drop one header into your project — no build system required.
 
-Vec · Map · List · Queue · Set
+Vec · Map · List · Queue · Set · Trie
 
 | Header | Structure | Notes |
 |---|---|---|
@@ -12,6 +12,7 @@ Vec · Map · List · Queue · Set
 | `list.h` | Doubly-linked list | O(1) front/back ops |
 | `queue.h` | FIFO queue | Circular buffer, auto-resize |
 | `set.h` | Hash set (strings) | Open addressing, auto-resize |
+| `trie.h` | Trie (prefix tree) | Lowercase a–z, O(k) ops |
 
 ---
 
@@ -145,6 +146,26 @@ int main(void) {
 }
 ```
 
+### Trie
+
+```c
+#include "trie.h"
+#include <stdio.h>
+
+int main(void) {
+    Trie t;
+    trie_init(&t);
+    trie_insert(&t, "apple");
+    trie_insert(&t, "app");
+    trie_insert(&t, "banana");
+    printf("search apple: %d\n", trie_search(&t, "apple"));
+    printf("starts with ap: %d\n", trie_starts_with(&t, "ap"));
+    trie_delete(&t, "apple");
+    printf("search apple after delete: %d\n", trie_search(&t, "apple"));
+    trie_free(&t);
+}
+```
+
 ---
 
 ## Building examples & tests
@@ -213,6 +234,17 @@ void set_free(Set *s);
 int  set_add (Set *s, const char *elem);
 int  set_has (const Set *s, const char *elem);
 int  set_del (Set *s, const char *elem);
+```
+
+### Trie — Prefix tree
+
+```c
+int  trie_init       (Trie *t);
+void trie_free       (Trie *t);
+int  trie_insert     (Trie *t, const char *word);
+int  trie_search     (const Trie *t, const char *word);
+int  trie_starts_with(const Trie *t, const char *prefix);
+int  trie_delete     (Trie *t, const char *word);
 ```
 
 ---
